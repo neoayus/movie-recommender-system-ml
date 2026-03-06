@@ -6,9 +6,13 @@ import gdown
 
 FILE_ID = "1B-Uymv3K2M473frYGGrQN6e70ta6P9uc"
 
+# delete corrupted file if HTML got downloaded
+if os.path.exists("similarity.pkl") and os.path.getsize("similarity.pkl") < 1000000:
+    os.remove("similarity.pkl")
+
+# download if missing
 if not os.path.exists("similarity.pkl"):
-    url = f"https://drive.google.com/uc?id={FILE_ID}&confirm=t"
-    gdown.download(url, "similarity.pkl", quiet=False)
+    gdown.download(id=FILE_ID, output="similarity.pkl", quiet=False)
 api_key = st.secrets["TMDB_API_KEY"]
 
 def fetch_poster(movie_id):
