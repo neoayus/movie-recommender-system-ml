@@ -1,153 +1,317 @@
-Summary
-=======
+# 🎬 Movie Recommender System
 
-This dataset (ml-latest-small) describes 5-star rating and free-text tagging activity from [MovieLens](http://movielens.org), a movie recommendation service. It contains 100836 ratings and 3683 tag applications across 9742 movies. These data were created by 610 users between March 29, 1996 and September 24, 2018. This dataset was generated on September 26, 2018.
+A content-based movie recommendation system built with **Machine Learning, Python, and Streamlit**.
+Select a movie and the system recommends similar movies along with their posters.
 
-Users were selected at random for inclusion. All selected users had rated at least 20 movies. No demographic information is included. Each user is represented by an id, and no other information is provided.
+---
 
-The data are contained in the files `links.csv`, `movies.csv`, `ratings.csv` and `tags.csv`. More details about the contents and use of all these files follows.
+## 🚀 Live Demo
 
-This is a *development* dataset. As such, it may change over time and is not an appropriate dataset for shared research results. See available *benchmark* datasets if that is your intent.
+Streamlit App:
+https://ai-movie-recommender-07.streamlit.app
 
-This and other GroupLens data sets are publicly available for download at <http://grouplens.org/datasets/>.
+---
 
+## ✨ Features
 
-Usage License
-=============
+* Content-based movie recommendations
+* Movie posters fetched using **TMDB API**
+* Interactive UI built with **Streamlit**
+* Deployed on **Streamlit Cloud**
+* Large similarity model automatically downloaded from Google Drive
 
-Neither the University of Minnesota nor any of the researchers involved can guarantee the correctness of the data, its suitability for any particular purpose, or the validity of results based on the use of the data set. The data set may be used for any research purposes under the following conditions:
+---
 
-* The user may not state or imply any endorsement from the University of Minnesota or the GroupLens Research Group.
-* The user must acknowledge the use of the data set in publications resulting from the use of the data set (see below for citation information).
-* The user may redistribute the data set, including transformations, so long as it is distributed under these same license conditions.
-* The user may not use this information for any commercial or revenue-bearing purposes without first obtaining permission from a faculty member of the GroupLens Research Project at the University of Minnesota.
-* The executable software scripts are provided "as is" without warranty of any kind, either expressed or implied, including, but not limited to, the implied warranties of merchantability and fitness for a particular purpose. The entire risk as to the quality and performance of them is with you. Should the program prove defective, you assume the cost of all necessary servicing, repair or correction.
+## 🧠 How It Works
 
-In no event shall the University of Minnesota, its affiliates or employees be liable to you for any damages arising out of the use or inability to use these programs (including but not limited to loss of data or data being rendered inaccurate).
+1. The dataset contains movie metadata including:
 
-If you have any further questions or comments, please email <grouplens-info@umn.edu>
+   * genres
+   * keywords
+   * cast
+   * crew
+   * overview
 
+2. These features are combined into a single **tags column**.
 
-Citation
-========
+3. Text data is converted into vectors using:
 
-To acknowledge use of the dataset in publications, please cite the following paper:
+   * **CountVectorizer**
+   * **Cosine Similarity**
 
-> F. Maxwell Harper and Joseph A. Konstan. 2015. The MovieLens Datasets: History and Context. ACM Transactions on Interactive Intelligent Systems (TiiS) 5, 4: 19:1–19:19. <https://doi.org/10.1145/2827872>
+4. When a user selects a movie:
 
+   * The system finds the most similar vectors
+   * Returns the **top 5 recommended movies**
+   * Fetches posters using **TMDB API**
 
-Further Information About GroupLens
-===================================
+---
 
-GroupLens is a research group in the Department of Computer Science and Engineering at the University of Minnesota. Since its inception in 1992, GroupLens's research projects have explored a variety of fields including:
+## 🛠️ Tech Stack
 
-* recommender systems
-* online communities
-* mobile and ubiquitious technologies
-* digital libraries
-* local geographic information systems
+* **Python**
+* **Scikit-Learn**
+* **Pandas**
+* **Streamlit**
+* **TMDB API**
+* **gdown (for model download)**
 
-GroupLens Research operates a movie recommender based on collaborative filtering, MovieLens, which is the source of these data. We encourage you to visit <http://movielens.org> to try it out! If you have exciting ideas for experimental work to conduct on MovieLens, send us an email at <grouplens-info@cs.umn.edu> - we are always interested in working with external collaborators.
+---
 
+## 📂 Project Structure
 
-Content and Use of Files
-========================
+```
+movie-recommender-system/
+│
+├── app.py
+├── movies.pkl
+├── similarity.pkl (downloaded automatically)
+├── requirements.txt
+├── README.md
+│
+├── datasets/
+│   ├── tmdb_5000_movies.csv
+│   └── tmdb_5000_credits.csv
+│
+└── .streamlit/
+    └── secrets.toml
+```
 
-Formatting and Encoding
------------------------
+---
 
-The dataset files are written as [comma-separated values](http://en.wikipedia.org/wiki/Comma-separated_values) files with a single header row. Columns that contain commas (`,`) are escaped using double-quotes (`"`). These files are encoded as UTF-8. If accented characters in movie titles or tag values (e.g. Misérables, Les (1995)) display incorrectly, make sure that any program reading the data, such as a text editor, terminal, or script, is configured for UTF-8.
+## ⚙️ Installation
 
+Clone the repository:
 
-User Ids
---------
+```
+git clone https://github.com/rabbitx07/movie-recommender-system-ml.git
+cd movie-recommender-system-ml
+```
 
-MovieLens users were selected at random for inclusion. Their ids have been anonymized. User ids are consistent between `ratings.csv` and `tags.csv` (i.e., the same id refers to the same user across the two files).
+Create virtual environment:
 
+```
+python -m venv venv
+```
 
-Movie Ids
----------
+Activate environment:
 
-Only movies with at least one rating or tag are included in the dataset. These movie ids are consistent with those used on the MovieLens web site (e.g., id `1` corresponds to the URL <https://movielens.org/movies/1>). Movie ids are consistent between `ratings.csv`, `tags.csv`, `movies.csv`, and `links.csv` (i.e., the same id refers to the same movie across these four data files).
+Windows:
 
+```
+venv\Scripts\activate
+```
 
-Ratings Data File Structure (ratings.csv)
------------------------------------------
+Install dependencies:
 
-All ratings are contained in the file `ratings.csv`. Each line of this file after the header row represents one rating of one movie by one user, and has the following format:
+```
+pip install -r requirements.txt
+```
 
-    userId,movieId,rating,timestamp
+---
 
-The lines within this file are ordered first by userId, then, within user, by movieId.
+## 🔑 TMDB API Setup
 
-Ratings are made on a 5-star scale, with half-star increments (0.5 stars - 5.0 stars).
+Create a file:
 
-Timestamps represent seconds since midnight Coordinated Universal Time (UTC) of January 1, 1970.
+```
+.streamlit/secrets.toml
+```
 
+Add your TMDB API key:
 
-Tags Data File Structure (tags.csv)
------------------------------------
+```
+TMDB_API_KEY = "your_api_key_here"
+```
 
-All tags are contained in the file `tags.csv`. Each line of this file after the header row represents one tag applied to one movie by one user, and has the following format:
+You can get a free API key from:
 
-    userId,movieId,tag,timestamp
+https://www.themoviedb.org/
 
-The lines within this file are ordered first by userId, then, within user, by movieId.
+---
 
-Tags are user-generated metadata about movies. Each tag is typically a single word or short phrase. The meaning, value, and purpose of a particular tag is determined by each user.
+## ▶️ Run the App
 
-Timestamps represent seconds since midnight Coordinated Universal Time (UTC) of January 1, 1970.
+```
+streamlit run app.py
+```
 
+---
 
-Movies Data File Structure (movies.csv)
----------------------------------------
+## 📊 Dataset
 
-Movie information is contained in the file `movies.csv`. Each line of this file after the header row represents one movie, and has the following format:
+Dataset used:
 
-    movieId,title,genres
+* TMDB 5000 Movie Dataset
 
-Movie titles are entered manually or imported from <https://www.themoviedb.org/>, and include the year of release in parentheses. Errors and inconsistencies may exist in these titles.
+Source:
+https://www.kaggle.com/datasets/tmdb/tmdb-movie-metadata
 
-Genres are a pipe-separated list, and are selected from the following:
+---
+# 🎬 Movie Recommender System
 
-* Action
-* Adventure
-* Animation
-* Children's
-* Comedy
-* Crime
-* Documentary
-* Drama
-* Fantasy
-* Film-Noir
-* Horror
-* Musical
-* Mystery
-* Romance
-* Sci-Fi
-* Thriller
-* War
-* Western
-* (no genres listed)
+A content-based movie recommendation system built with **Machine Learning, Python, and Streamlit**.
+Select a movie and the system recommends similar movies along with their posters.
 
+---
 
-Links Data File Structure (links.csv)
----------------------------------------
+## 🚀 Live Demo
 
-Identifiers that can be used to link to other sources of movie data are contained in the file `links.csv`. Each line of this file after the header row represents one movie, and has the following format:
+Streamlit App:
+https://ai-movie-recommender-07.streamlit.app
 
-    movieId,imdbId,tmdbId
+---
 
-movieId is an identifier for movies used by <https://movielens.org>. E.g., the movie Toy Story has the link <https://movielens.org/movies/1>.
+## ✨ Features
 
-imdbId is an identifier for movies used by <http://www.imdb.com>. E.g., the movie Toy Story has the link <http://www.imdb.com/title/tt0114709/>.
+* Content-based movie recommendations
+* Movie posters fetched using **TMDB API**
+* Interactive UI built with **Streamlit**
+* Deployed on **Streamlit Cloud**
+* Large similarity model automatically downloaded from Google Drive
 
-tmdbId is an identifier for movies used by <https://www.themoviedb.org>. E.g., the movie Toy Story has the link <https://www.themoviedb.org/movie/862>.
+---
 
-Use of the resources listed above is subject to the terms of each provider.
+## 🧠 How It Works
 
+1. The dataset contains movie metadata including:
 
-Cross-Validation
-----------------
+   * genres
+   * keywords
+   * cast
+   * crew
+   * overview
 
-Prior versions of the MovieLens dataset included either pre-computed cross-folds or scripts to perform this computation. We no longer bundle either of these features with the dataset, since most modern toolkits provide this as a built-in feature. If you wish to learn about standard approaches to cross-fold computation in the context of recommender systems evaluation, see [LensKit](http://lenskit.org) for tools, documentation, and open-source code examples.
+2. These features are combined into a single **tags column**.
+
+3. Text data is converted into vectors using:
+
+   * **CountVectorizer**
+   * **Cosine Similarity**
+
+4. When a user selects a movie:
+
+   * The system finds the most similar vectors
+   * Returns the **top 5 recommended movies**
+   * Fetches posters using **TMDB API**
+
+---
+
+## 🛠️ Tech Stack
+
+* **Python**
+* **Scikit-Learn**
+* **Pandas**
+* **Streamlit**
+* **TMDB API**
+* **gdown (for model download)**
+
+---
+
+## 📂 Project Structure
+
+```
+movie-recommender-system/
+│
+├── app.py
+├── movies.pkl
+├── similarity.pkl (downloaded automatically)
+├── requirements.txt
+├── README.md
+│
+├── datasets/
+│   ├── tmdb_5000_movies.csv
+│   └── tmdb_5000_credits.csv
+│
+└── .streamlit/
+    └── secrets.toml
+```
+
+---
+
+## ⚙️ Installation
+
+Clone the repository:
+
+```
+git clone https://github.com/rabbitx07/movie-recommender-system-ml.git
+cd movie-recommender-system-ml
+```
+
+Create virtual environment:
+
+```
+python -m venv venv
+```
+
+Activate environment:
+
+Windows:
+
+```
+venv\Scripts\activate
+```
+
+Install dependencies:
+
+```
+pip install -r requirements.txt
+```
+
+---
+
+## 🔑 TMDB API Setup
+
+Create a file:
+
+```
+.streamlit/secrets.toml
+```
+
+Add your TMDB API key:
+
+```
+TMDB_API_KEY = "your_api_key_here"
+```
+
+You can get a free API key from:
+
+https://www.themoviedb.org/
+
+---
+
+## ▶️ Run the App
+
+```
+streamlit run app.py
+```
+
+---
+
+## 📊 Dataset
+
+Dataset used:
+
+* TMDB 5000 Movie Dataset
+
+Source:
+https://www.kaggle.com/datasets/tmdb/tmdb-movie-metadata
+
+---
+
+## 👩‍💻 Author
+
+**Anshika**
+
+BCA (AI & Data Science)
+Graphic Era University
+
+GitHub:
+https://github.com/rabbitx07
+
+---
+
+## ⭐ If you like this project
+
+Give the repository a **star** ⭐
+
