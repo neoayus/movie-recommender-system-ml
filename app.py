@@ -1,9 +1,12 @@
 import streamlit as st
 import pickle
 import requests
+import os
 import gdown
-gdown.download("https://drive.google.com/file/d/1B-Uymv3K2M473frYGGrQN6e70ta6P9uc/view?usp=sharing", "similarity.pkl")
 
+if not os.path.exists("similarity.pkl"):
+    url = "https://drive.google.com/uc?id=1B-Uymv3K2M473frYGGrQN6e70ta6P9uc"
+    gdown.download(url, "similarity.pkl", quiet=False)
 api_key = st.secrets["TMDB_API_KEY"]
 
 def fetch_poster(movie_id):
