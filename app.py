@@ -1,6 +1,8 @@
 import streamlit as st
 import pickle
 import requests
+import gdown
+gdown.download("https://drive.google.com/file/d/1B-Uymv3K2M473frYGGrQN6e70ta6P9uc/view?usp=sharing", "similarity.pkl")
 
 
 def fetch_poster(movie_id):
